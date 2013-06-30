@@ -108,6 +108,30 @@ void recursiveFindNewNodes(SKNode* node) {
     }
 }
 
+- (void)addChild:(SKNode *)node {
+    [super addChild:node];
+    skc_applyOnEnter(node);
+}
+
+- (void)insertChild:(SKNode *)node atIndex:(NSInteger)index {
+    [super insertChild:node atIndex:index];
+    skc_applyOnEnter(node);
+}
+
+- (void)removeChildrenInArray:(NSArray *)nodes {
+    for (SKNode* node in nodes) {
+        skc_applyOnExit(node);
+    }
+    
+    [super removeChildrenInArray:nodes];
+}
+- (void)removeAllChildren {
+    for (SKNode* node in self.children) {
+        skc_applyOnExit(node);
+    }
+    [super removeAllChildren];
+}
+
 - (void)didEvaluateActions {
     [super didEvaluateActions];
     

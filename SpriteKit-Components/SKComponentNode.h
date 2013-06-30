@@ -11,6 +11,9 @@
 
 #define SKGetComponent(__skComponentNode, __className)  ((__className*)[__skComponentNode getComponent:[__className class]])
 
+void skc_applyOnEnter(SKNode* node);
+void skc_applyOnExit(SKNode* node);
+
 SK_EXPORT @interface SKComponentNode : SKNode {
 }
 
@@ -30,7 +33,5 @@ SK_EXPORT @interface SKComponentNode : SKNode {
 
 - (void)onEnter;
 - (void)onExit;
-
-- (void)removeFromParentWithCleanup:(BOOL)cleanup;
 
 @end

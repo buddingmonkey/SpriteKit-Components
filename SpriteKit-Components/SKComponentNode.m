@@ -100,18 +100,8 @@
     }
     
     // notify SKComponent children, recursively
-    applyOnEnter(self);
-}
-
-// recursively run onEnter on all SKComponentNode decendents
-void applyOnEnter(SKNode* node) {
-    for (SKNode* child in node.children) {
-        if ([child isKindOfClass:[SKComponentNode class]]) {
-            if (!((SKComponentNode*)child)->_hasEnteredScene)
-                [(SKComponentNode*)child onEnter];
-        } else {
-            applyOnEnter(child);
-        }
+    for (SKNode *node in self.children) {
+        skc_applyOnEnter(node);
     }
 }
 
@@ -120,8 +110,6 @@ void applyOnEnter(SKNode* node) {
         return;
     
     self.hasEnteredScene = NO;
-
-    // clean up
 
     // unregister self with scene
     SKComponentScene* scene = SKComponentSceneForNode(self);
@@ -132,33 +120,43 @@ void applyOnEnter(SKNode* node) {
         SKComponentPerformSelector(component, onExit);
     }
 
-    applyOnExit(self);
+    for (SKNode *node in self.children) {
+        skc_applyOnExit(node);
+    }
 }
 
 
 // recursively run onEnter on all SKComponentNode decendents
-void applyOnExit(SKNode* node) {
-    for (SKNode* child in node.children) {
-        if ([child isKindOfClass:[SKComponentNode class]]) {
-            if (((SKComponentNode*)child)->_hasEnteredScene)
-                [(SKComponentNode*)child onExit];
-        } else {
-            applyOnExit(child);
+void skc_applyOnEnter(SKNode* node) {
+    if ([node isKindOfClass:[SKComponentNode class]]) {
+        if (!((SKComponentNode*)node).hasEnteredScene)
+            [(SKComponentNode*)node onEnter];
+    } else {
+        for (SKNode* child in node.children) {
+            skc_applyOnEnter(child);
         }
     }
 }
+
+// recursively run onExit on all SKComponentNode decendents
+void skc_applyOnExit(SKNode* node) {
+    if ([node isKindOfClass:[SKComponentNode class]]) {
+        if (((SKComponentNode*)node).hasEnteredScene)
+            [(SKComponentNode*)node onExit];
+    } else {
+        for (SKNode* child in node.children) {
+            skc_applyOnExit(child);
+        }
+    }
+}
+
 
 
 - (void)addChild:(SKNode *)node {
     [super addChild:node];
     
     if (_hasEnteredScene) {
-        if ([node isKindOfClass:[SKComponentNode class]]) {
-            if (!((SKComponentNode*)node)->_hasEnteredScene)
-                [(SKComponentNode*)node onEnter];
-        } else {
-            applyOnEnter(node);
-        }
+        skc_applyOnEnter(node);
     }
 }
 
@@ -166,29 +164,21 @@ void applyOnExit(SKNode* node) {
     [super insertChild:node atIndex:index];
 
     if (_hasEnteredScene) {
-        if ([node isKindOfClass:[SKComponentNode class]]) {
-            if (!((SKComponentNode*)node)->_hasEnteredScene)
-                [(SKComponentNode*)node onEnter];
-        } else {
-            applyOnEnter(node);
-        }
+        skc_applyOnEnter(node);
     }
 }
 
 - (void)removeChildrenInArray:(NSArray *)nodes {
     for (SKNode* node in nodes) {
-        if ([node isKindOfClass:[SKComponentNode class]]) {
-            if (((SKComponentNode*)node).hasEnteredScene)
-                [(SKComponentNode*)node onExit];
-        } else {
-            applyOnExit(node);
-        }
+        skc_applyOnExit(node);
     }
     
     [super removeChildrenInArray:nodes];
 }
 - (void)removeAllChildren {
-    [self onExit];
+    for (SKNode *node in self.children) {
+        skc_applyOnExit(node);
+    }
     [super removeAllChildren];
 }
 
@@ -197,12 +187,6 @@ void applyOnExit(SKNode* node) {
     [super removeFromParent];
 }
 
-- (void)removeFromParentWithCleanup:(BOOL)cleanup {
-    if (cleanup) {
-        [self onExit];
-    }
-    [super removeFromParent];
-}
 
 - (void)setAlpha:(CGFloat)alpha {
     [super setAlpha:alpha];
