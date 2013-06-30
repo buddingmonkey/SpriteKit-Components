@@ -7,11 +7,18 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
-#import "SKBehavior.h"
+#import "SKComponent.h"
 #import "SKComponentNode.h"
 
-@interface SKComponentScene : SKScene{
-    NSMutableDictionary* components;
+#define SKComponentSceneForNode(node)   (SKComponentScene*)([(node).scene isKindOfClass:[SKComponentScene class]] ? (node).scene : Nil)
+
+
+SK_EXPORT @interface SKComponentScene : SKScene <SKPhysicsContactDelegate> {
 }
+
+@property (nonatomic) CFTimeInterval deltaTime;
+
+-(void) registerComponent:(id<SKComponent>)component;
+-(void) unregisterComponent:(id<SKComponent>)component;
 
 @end

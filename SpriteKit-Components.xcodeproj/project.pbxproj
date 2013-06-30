@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D924214F1779E20B00CF03C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D924214E1779E20B00CF03C8 /* Foundation.framework */; };
-		D92421541779E20B00CF03C8 /* SpriteKit_Components.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D92421531779E20B00CF03C8 /* SpriteKit_Components.h */; };
-		D92421561779E20B00CF03C8 /* SpriteKit_Components.m in Sources */ = {isa = PBXBuildFile; fileRef = D92421551779E20B00CF03C8 /* SpriteKit_Components.m */; };
 		D924215D1779E20B00CF03C8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D924215C1779E20B00CF03C8 /* XCTest.framework */; };
 		D924215E1779E20B00CF03C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D924214E1779E20B00CF03C8 /* Foundation.framework */; };
 		D92421601779E20B00CF03C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D924215F1779E20B00CF03C8 /* UIKit.framework */; };
@@ -38,7 +36,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				D92421541779E20B00CF03C8 /* SpriteKit_Components.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,20 +45,19 @@
 		D924214B1779E20B00CF03C8 /* libSpriteKit-Components.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libSpriteKit-Components.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D924214E1779E20B00CF03C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D92421521779E20B00CF03C8 /* SpriteKit-Components-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SpriteKit-Components-Prefix.pch"; sourceTree = "<group>"; };
-		D92421531779E20B00CF03C8 /* SpriteKit_Components.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpriteKit_Components.h; sourceTree = "<group>"; };
-		D92421551779E20B00CF03C8 /* SpriteKit_Components.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpriteKit_Components.m; sourceTree = "<group>"; };
 		D924215B1779E20B00CF03C8 /* SpriteKit-ComponentsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SpriteKit-ComponentsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D924215C1779E20B00CF03C8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		D924215F1779E20B00CF03C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		D92421661779E20B00CF03C8 /* SpriteKit-ComponentsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpriteKit-ComponentsTests-Info.plist"; sourceTree = "<group>"; };
 		D92421681779E20B00CF03C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D924216A1779E20B00CF03C8 /* SpriteKit_ComponentsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SpriteKit_ComponentsTests.m; sourceTree = "<group>"; };
-		D92421741779E23900CF03C8 /* SKBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBehavior.h; sourceTree = "<group>"; };
+		D92421741779E23900CF03C8 /* SKComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKComponent.h; sourceTree = "<group>"; };
 		D92421751779E23900CF03C8 /* SKComponentNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKComponentNode.h; sourceTree = "<group>"; };
 		D92421761779E23900CF03C8 /* SKComponentNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKComponentNode.m; sourceTree = "<group>"; };
 		D92421771779E23900CF03C8 /* SKComponentScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKComponentScene.h; sourceTree = "<group>"; };
 		D92421781779E23900CF03C8 /* SKComponentScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKComponentScene.m; sourceTree = "<group>"; };
 		D924217C1779E27800CF03C8 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		DB736202177F526600307609 /* SKComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKComponents.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +117,9 @@
 		D92421501779E20B00CF03C8 /* SpriteKit-Components */ = {
 			isa = PBXGroup;
 			children = (
+				DB736202177F526600307609 /* SKComponents.h */,
 				D924217B1779E23F00CF03C8 /* Classes */,
-				D92421741779E23900CF03C8 /* SKBehavior.h */,
+				D92421741779E23900CF03C8 /* SKComponent.h */,
 				D92421511779E20B00CF03C8 /* Supporting Files */,
 			);
 			path = "SpriteKit-Components";
@@ -161,8 +158,6 @@
 				D92421761779E23900CF03C8 /* SKComponentNode.m */,
 				D92421771779E23900CF03C8 /* SKComponentScene.h */,
 				D92421781779E23900CF03C8 /* SKComponentScene.m */,
-				D92421531779E20B00CF03C8 /* SpriteKit_Components.h */,
-				D92421551779E20B00CF03C8 /* SpriteKit_Components.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -249,7 +244,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D924217A1779E23900CF03C8 /* SKComponentScene.m in Sources */,
-				D92421561779E20B00CF03C8 /* SpriteKit_Components.m in Sources */,
 				D92421791779E23900CF03C8 /* SKComponentNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,6 +294,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Semion Bezrukov (DVHL297EJV)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -317,6 +312,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 			};
 			name = Debug;
 		};
@@ -336,6 +332,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Semion Bezrukov (DVHL297EJV)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -346,6 +343,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -353,6 +351,7 @@
 		D924216F1779E20B00CF03C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				DSTROOT = /tmp/SpriteKit_Components.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpriteKit-Components/SpriteKit-Components-Prefix.pch";
@@ -365,6 +364,7 @@
 		D92421701779E20B00CF03C8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				DSTROOT = /tmp/SpriteKit_Components.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpriteKit-Components/SpriteKit-Components-Prefix.pch";
@@ -429,6 +429,7 @@
 				D92421701779E20B00CF03C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D92421711779E20B00CF03C8 /* Build configuration list for PBXNativeTarget "SpriteKit-ComponentsTests" */ = {
 			isa = XCConfigurationList;
@@ -437,6 +438,7 @@
 				D92421731779E20B00CF03C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

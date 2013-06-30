@@ -7,22 +7,30 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
-#import "SKBehavior.h"
+#import "SKComponent.h"
 
-@interface SKComponentNode : SKNode{
-    NSMutableDictionary* components;
+#define SKGetComponent(__skComponentNode, __className)  ((__className*)[__skComponentNode getComponent:[__className class]])
+
+SK_EXPORT @interface SKComponentNode : SKNode {
 }
 
-// Subclasses should not override this method.
--(void) update:(CGFloat) deltaTime;
+@property (nonatomic) BOOL hasEnteredScene;
+@property (nonatomic) NSMutableDictionary* components;
 
-//Subclasses should not override this method.
--(void) didSimulatePhysics;
 
-//Subclasses should not override this method.
--(void) removeComponentWithComponent:(NSObject<SKBehavior>*) component;
+- (BOOL)addComponent:(id<SKComponent>)component withName:(NSString*)name;
+- (BOOL)addComponent:(id<SKComponent>)component;
 
-//Subclasses should not override this method.
--(void) removeComponentWithKey:(NSString*) uuid;
+- (void)removeComponent:(id<SKComponent>)component;
+- (void)removeComponentWithClass:(Class)className;
+- (void)removeComponentWithName:(NSString*)name;
+
+- (id<SKComponent>)getComponent:(Class)componentClass;
+- (id<SKComponent>)getComponentWithName:(NSString*)name;
+
+- (void)onEnter;
+- (void)onExit;
+
+- (void)removeFromParentWithCleanup:(BOOL)cleanup;
 
 @end

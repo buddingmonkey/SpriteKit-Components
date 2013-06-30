@@ -1,13 +1,13 @@
 //
-//  SpriteKit_Components.h
+//  SKComponentManager.h
 //  SpriteKit-Components
 //
-//  Created by Andrew Eiche on 6/25/13.
+//  Created by Levi on 6/28/13.
 //  Copyright (c) 2013 Andrew Eiche. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface SpriteKit_Components : NSObject
+@interface SKComponentManager : NSObject
 
 @end
