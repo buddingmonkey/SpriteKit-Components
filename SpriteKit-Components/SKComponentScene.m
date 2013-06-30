@@ -9,9 +9,9 @@
 #import "SKComponentScene.h"
 
 @interface SKComponentScene() {
-    NSHashTable* components;
-    NSHashTable* componentsToRemove;
-    NSHashTable* componentsToAdd;
+    NSHashTable* componentNodes;
+    NSHashTable* componentNodesToRemove;
+    NSHashTable* componentNodesToAdd;
     CFTimeInterval lastFrameTime;
 }
 
@@ -26,9 +26,9 @@ static Class skComponentNodeClass;
     if ((self = [super initWithSize:size])) {
         if (!skComponentNodeClass)
             skComponentNodeClass = [SKComponentNode class];
-        components = [NSHashTable weakObjectsHashTable];
-        componentsToAdd = [NSHashTable weakObjectsHashTable];
-        componentsToRemove = [NSHashTable weakObjectsHashTable];
+        componentNodes = [NSHashTable weakObjectsHashTable];
+        componentNodesToAdd = [NSHashTable weakObjectsHashTable];
+        componentNodesToRemove = [NSHashTable weakObjectsHashTable];
         lastFrameTime = 0;
         
         self.physicsWorld.contactDelegate = self;
@@ -37,22 +37,22 @@ static Class skComponentNodeClass;
 }
 
 - (void)dealloc {
-    components = Nil;
+    componentNodes = Nil;
 }
 
-- (void)registerComponent:(id<SKComponent>)component {
-    if (![components containsObject:component]) {
-        [componentsToAdd addObject:component];
+- (void)registerComponentNode:(SKComponentNode *)node {
+    if (![componentNodes containsObject:node]) {
+        [componentNodesToAdd addObject:node];
     } else {
-        [componentsToRemove removeObject:component];
+        [componentNodesToRemove removeObject:node];
     }
 }
 
-- (void)unregisterComponent:(id<SKComponent>)component {
-    if ([components containsObject:component]) {
-        [componentsToRemove addObject:component];
+- (void)unregisterComponentNode:(SKComponentNode *)node {
+    if ([componentNodes containsObject:node]) {
+        [componentNodesToRemove addObject:node];
     } else {
-        [componentsToAdd removeObject:component];
+        [componentNodesToAdd removeObject:node];
     }
 }
 
@@ -67,8 +67,8 @@ static Class skComponentNodeClass;
 
     
     // remove requested components
-    [components minusHashTable:componentsToRemove];
-    [componentsToRemove removeAllObjects];
+    [componentNodes minusHashTable:componentNodesToRemove];
+    [componentNodesToRemove removeAllObjects];
 
     
     // look for new SKComponent nodes and make them enter the scene
@@ -76,14 +76,16 @@ static Class skComponentNodeClass;
     
     
     // add new componenets
-    [components unionHashTable:componentsToAdd];
-    [componentsToAdd removeAllObjects];
+    [componentNodes unionHashTable:componentNodesToAdd];
+    [componentNodesToAdd removeAllObjects];
     
     
     // perform update on all regiseterd components
-    for (id<SKComponent> component in components.objectEnumerator) {
-        if (component.enabled && [component respondsToSelector:@selector(update:)])
-            [component update:_deltaTime];
+    for (SKComponentNode* node in componentNodes) {
+        for (id<SKComponent> component in node.components) {
+            if (component.enabled && [component respondsToSelector:@selector(update:)])
+                [component update:_deltaTime];
+        }
     }
     
     /** @todo: consider looping for as long as there are new components to add */
@@ -109,28 +111,36 @@ void recursiveFindNewNodes(SKNode* node) {
 - (void)didEvaluateActions {
     [super didEvaluateActions];
     
-    for (id<SKComponent> component in components.objectEnumerator) {
-        SKComponentPerformSelector(component, didEvaluateActions);
+    for (SKComponentNode* node in componentNodes) {
+        for (id<SKComponent> component in node.components) {
+            SKComponentPerformSelector(component, didEvaluateActions);
+        }
     }
 }
 
 - (void)didSimulatePhysics{
     [super didSimulatePhysics];
     
-    for (id<SKComponent> component in components.objectEnumerator) {
-        SKComponentPerformSelector(component, didSimulatePhysics);
+    for (SKComponentNode* node in componentNodes) {
+        for (id<SKComponent> component in node.components) {
+            SKComponentPerformSelector(component, didSimulatePhysics);
+        }
     }
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
-    for (id<SKComponent> component in components.objectEnumerator) {
-        SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
+    for (SKComponentNode* node in componentNodes) {
+        for (id<SKComponent> component in node.components) {
+            SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
+        }
     }
 }
 
 - (void)didEndContact:(SKPhysicsContact *)contact {
-    for (id<SKComponent> component in components.objectEnumerator) {
-        SKComponentPerformSelectorWithObject(component, didEndContact, contact);
+    for (SKComponentNode* node in componentNodes) {
+        for (id<SKComponent> component in node.components) {
+            SKComponentPerformSelectorWithObject(component, didEndContact, contact);
+        }
     }
 }
 @end

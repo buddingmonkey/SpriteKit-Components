@@ -10,6 +10,7 @@
 #import "SKComponentScene.h"
 
 @interface SKComponentNode() {
+    NSMutableOrderedSet *componentKeys;
 }
 @end
 
@@ -19,7 +20,8 @@
 {
     self = [super init];
     if (self) {
-        components = [[NSMutableDictionary alloc] init];
+        componentKeys = [NSMutableOrderedSet orderedSet];
+        components = [NSMutableOrderedSet orderedSet];
     }
     return self;
 }
@@ -34,34 +36,23 @@
 
 - (BOOL)addComponent:(id<SKComponent>)component{
     return [self _addComponent:component withKey:(id<NSCopying>)[component class]];
-    Class componentClass = [component class];
-    [components setObject:components forKey:(id<NSCopying>)componentClass];
 }
 
 - (BOOL)_addComponent:(id<SKComponent>)component withKey:(id<NSCopying>)key {
-    if ([components objectForKey:key])
+    if ([componentKeys containsObject:key])
         return NO;
-    
-    [components setObject:component forKey:key];
+    [components addObject:component];
+    [componentKeys addObject:key];
     component.node = self;
     component.enabled = YES;
     SKComponentPerformSelector(component, start);
-
-    if (_hasEnteredScene) {
-        SKComponentScene* scene = SKComponentSceneForNode(self);
-        [scene registerComponent:component];
-    }
 
     return YES;
 }
 
 - (void)removeComponent:(id<SKComponent>)component{
-    for (NSString* key in components) {
-        if (components[key] == component){
-            [self _removeComponentWithKey:key];
-            return;
-        }
-    }
+    int index = [components indexOfObject:component];
+    [self _removeComponentWithKey:[componentKeys objectAtIndex:index]];
 }
 
 - (void)removeComponentWithClass:(Class)className {
@@ -73,27 +64,24 @@
 }
 
 - (void)_removeComponentWithKey:(id)key {
-    id<SKComponent> component = [components objectForKey:key];
-    if (!component) {
+    int index = [componentKeys indexOfObject:key];
+    if (index == NSNotFound) {
         return;
     }
     
-    if (_hasEnteredScene) {
-        SKComponentScene* scene = SKComponentSceneForNode(self);
-        [scene unregisterComponent:component];
-    }
-    
-    [components removeObjectForKey:key];
+    [componentKeys removeObjectAtIndex:index];
+    [components removeObjectAtIndex:index];
 }
 
 
 - (id<SKComponent>)getComponentWithName:(NSString*)name {
-    return [components objectForKey:name];
+    int index = [componentKeys indexOfObject:name];
+    return [components objectAtIndex:index];
 }
 
 - (id<SKComponent>)getComponent:(Class)componentClass {
-    id<SKComponent> component = [components objectForKey:componentClass];
-    return component;
+    int index = [componentKeys indexOfObject:componentClass];
+    return [components objectAtIndex:index];
 }
 
 - (void)onEnter {
@@ -103,11 +91,11 @@
     self.hasEnteredScene = YES;
     
     // register self with scene
-
-    // register components with scene
     SKComponentScene* scene = SKComponentSceneForNode(self);
-    for (id<SKComponent> component in components.objectEnumerator) {
-        [scene registerComponent:component];
+    [scene registerComponentNode:self];
+
+    // perform onEnter for all components
+    for (id<SKComponent> component in components) {
         SKComponentPerformSelector(component, onEnter);
     }
     
@@ -135,11 +123,13 @@ void applyOnEnter(SKNode* node) {
 
     // clean up
 
-    // unregister components with scene
+    // unregister self with scene
     SKComponentScene* scene = SKComponentSceneForNode(self);
-    for (id<SKComponent> component in components.objectEnumerator) {
+    [scene registerComponentNode:self];
+
+    // perform onExit for all components
+    for (id<SKComponent> component in components) {
         SKComponentPerformSelector(component, onExit);
-        [scene unregisterComponent:component];
     }
 
     applyOnExit(self);

@@ -15,7 +15,7 @@ SK_EXPORT @interface SKComponentNode : SKNode {
 }
 
 @property (nonatomic) BOOL hasEnteredScene;
-@property (nonatomic) NSMutableDictionary* components;
+@property (nonatomic) NSMutableOrderedSet* components;
 
 
 - (BOOL)addComponent:(id<SKComponent>)component withName:(NSString*)name;
