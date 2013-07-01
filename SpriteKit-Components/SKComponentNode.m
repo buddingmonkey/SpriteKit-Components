@@ -9,8 +9,14 @@
 #import "SKComponentNode.h"
 #import "SKComponentScene.h"
 
+@implementation SKCTouchState
+
+@end
+
+
 @interface SKComponentNode() {
     NSMutableOrderedSet *componentKeys;
+    BOOL isFingerDown;
 }
 @end
 
@@ -22,6 +28,11 @@
     if (self) {
         componentKeys = [NSMutableOrderedSet orderedSet];
         components = [NSMutableOrderedSet orderedSet];
+        
+        self.dragThreshold = 4;
+        self.longPressTime = 1;
+        
+        self.touchState = [SKCTouchState new];
     }
     return self;
 }
@@ -43,7 +54,8 @@
         return NO;
     [components addObject:component];
     [componentKeys addObject:key];
-    component.node = self;
+    if ([component respondsToSelector:@selector(node)])
+        component.node = self;
     component.enabled = YES;
     SKComponentPerformSelector(component, start);
 
@@ -150,6 +162,17 @@ void skc_applyOnExit(SKNode* node) {
     }
 }
 
+- (void)update:(CFTimeInterval)dt {
+    if (isFingerDown) {
+        _touchState.touchTime += dt;
+        if (!_touchState.isLongPress && !_touchState.isDragging && _touchState.touchTime > self.longPressTime) {
+            _touchState.isLongPress = YES;
+            for (id<SKComponent> component in components) {
+                SKComponentPerformSelectorWithObject(component, onLongPress, _touchState);
+            }            
+        }
+    }
+}
 
 
 - (void)addChild:(SKNode *)node {
@@ -194,6 +217,100 @@ void skc_applyOnExit(SKNode* node) {
     // set alpha on all immediate descendents
     for (SKNode *child in self.children) {
         child.alpha = alpha;
+    }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UITouch *touch in touches) {
+        if (!isFingerDown) {
+            isFingerDown = YES;
+            _touchState.touch = touch;
+            _touchState.absoluteTouchStart = [touch locationInNode:self.scene];
+            _touchState.touchStart = [touch locationInNode:self];
+            _touchState.touchLocation = _touchState.touchStart;
+            _touchState.touchTime = 0;
+            _touchState.isLongPress = NO;
+            _touchState.isDragging = NO;            
+        }
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UITouch *touch in touches) {
+        if (isFingerDown && touch == _touchState.touch) {
+            CGPoint location = [touch locationInNode:self];
+            _touchState.touchLocation = location;
+
+            if (!_touchState.isDragging) {
+                CGPoint d = CGPointMake(location.x-_touchState.touchStart.x, location.y-_touchState.touchStart.y);
+                float m = d.x*d.x + d.y*d.y;
+                if (m > _dragThreshold*_dragThreshold) {
+                    _touchState.isDragging = YES;
+                    for (id<SKComponent> component in components) {
+                        SKComponentPerformSelectorWithObject(component, dragStart, _touchState);
+                    }
+                }
+            }
+            if (_touchState.isDragging) {
+                for (id<SKComponent> component in components) {
+                    SKComponentPerformSelectorWithObject(component, dragMoved, _touchState);
+                }
+            }
+        }
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UITouch *touch in touches) {
+        if (isFingerDown && touch == _touchState.touch) {
+            isFingerDown = NO;
+            CGPoint location = [touch locationInNode:self];
+            _touchState.touchLocation = location;
+
+            if (_touchState.isDragging) {
+                CGRect frame = [self calculateAccumulatedFrame];
+                frame.origin.x = -frame.size.width/2;
+                frame.origin.y = -frame.size.height/2;
+                BOOL isSelect = CGRectContainsPoint(frame, location);
+
+                for (id<SKComponent> component in components) {
+                    if (component.enabled) {
+                        SKComponentPerformSelectorWithObject(component, dragDropped, _touchState);
+                        if (isSelect)
+                            SKComponentPerformSelectorWithObject(component, onSelect, _touchState);
+                    }
+                }
+            } else if (touch.tapCount > 0 && !_touchState.isLongPress) {
+                for (id<SKComponent> component in components) {
+                    SKComponentPerformSelectorWithObject(component, onTap, _touchState);
+                    SKComponentPerformSelectorWithObject(component, onSelect, _touchState);
+                }
+            } else {
+                CGRect frame = [self calculateAccumulatedFrame];
+                frame.origin.x = -frame.size.width/2;
+                frame.origin.y = -frame.size.height/2;
+                if (CGRectContainsPoint(frame, location)) {
+                    for (id<SKComponent> component in components) {
+                        SKComponentPerformSelectorWithObject(component, onSelect, _touchState);
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UITouch *touch in touches) {
+        if (isFingerDown && touch == _touchState.touch) {
+            isFingerDown = NO;
+            
+            if (_touchState.isDragging) {
+                _touchState.touchLocation = [touch locationInNode:self];
+                for (id<SKComponent> component in components) {
+                    SKComponentPerformSelectorWithObject(component, dragCancelled, _touchState);
+                }
+            }
+        }
     }
 }
 

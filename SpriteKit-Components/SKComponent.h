@@ -1,5 +1,5 @@
 //
-//  SpriteKitBehavior.h
+//  SKComponent.h
 //  ReEntry
 //
 //  Created by Andrew Eiche on 6/19/13.
@@ -18,9 +18,13 @@
         [(component) selectorName:object]; \
     }
 
-@protocol SKComponent <NSObject>
+@class SKCTouchState;
+
+SK_EXPORT @protocol SKComponent <NSObject>
 
 @property (nonatomic, readwrite) BOOL enabled;
+
+@optional
 @property (nonatomic, weak) SKNode *node;
 
 @optional
@@ -34,8 +38,14 @@
 - (void)didBeginContact:(SKPhysicsContact *)contact;
 - (void)didEndContact:(SKPhysicsContact *)contact;
 
-- (void)onSelect;
+- (void)update:(CFTimeInterval)dt;
+- (void)onSceneSizeChanged:(CGSize)oldSize;
 
-- (void)update:(CFTimeInterval)deltaTime;
-
+- (void)dragStart:(SKCTouchState*)touchState;
+- (void)dragMoved:(SKCTouchState*)touchState;
+- (void)dragDropped:(SKCTouchState*)touchState;
+- (void)dragCancelled:(SKCTouchState*)touchState;
+- (void)onTap:(SKCTouchState*)touchState;
+- (void)onLongPress:(SKCTouchState*)touchState;
+- (void)onSelect:(SKCTouchState*)touchState;
 @end

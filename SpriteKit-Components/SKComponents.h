@@ -10,5 +10,7 @@
 #define SpriteKit_Components_SKComponents_h
 
 #import "SKComponentScene.h"
+#import "SKCNodeIsComponent.h"
+
 
 #endif

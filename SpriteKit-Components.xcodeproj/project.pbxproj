@@ -17,6 +17,7 @@
 		D92421791779E23900CF03C8 /* SKComponentNode.m in Sources */ = {isa = PBXBuildFile; fileRef = D92421761779E23900CF03C8 /* SKComponentNode.m */; };
 		D924217A1779E23900CF03C8 /* SKComponentScene.m in Sources */ = {isa = PBXBuildFile; fileRef = D92421781779E23900CF03C8 /* SKComponentScene.m */; };
 		D924217D1779E27800CF03C8 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D924217C1779E27800CF03C8 /* SpriteKit.framework */; };
+		DB6930AD178081F800F7DE07 /* SKCNodeIsComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6930AC178081F800F7DE07 /* SKCNodeIsComponent.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		D92421771779E23900CF03C8 /* SKComponentScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKComponentScene.h; sourceTree = "<group>"; };
 		D92421781779E23900CF03C8 /* SKComponentScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKComponentScene.m; sourceTree = "<group>"; };
 		D924217C1779E27800CF03C8 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		DB6930AB178081F800F7DE07 /* SKCNodeIsComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKCNodeIsComponent.h; sourceTree = "<group>"; };
+		DB6930AC178081F800F7DE07 /* SKCNodeIsComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCNodeIsComponent.m; sourceTree = "<group>"; };
 		DB736202177F526600307609 /* SKComponents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKComponents.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,7 +122,7 @@
 			children = (
 				DB736202177F526600307609 /* SKComponents.h */,
 				D924217B1779E23F00CF03C8 /* Classes */,
-				D92421741779E23900CF03C8 /* SKComponent.h */,
+				DB6930AA178081CF00F7DE07 /* Components */,
 				D92421511779E20B00CF03C8 /* Supporting Files */,
 			);
 			path = "SpriteKit-Components";
@@ -160,6 +163,16 @@
 				D92421781779E23900CF03C8 /* SKComponentScene.m */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		DB6930AA178081CF00F7DE07 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D92421741779E23900CF03C8 /* SKComponent.h */,
+				DB6930AB178081F800F7DE07 /* SKCNodeIsComponent.h */,
+				DB6930AC178081F800F7DE07 /* SKCNodeIsComponent.m */,
+			);
+			name = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D924217A1779E23900CF03C8 /* SKComponentScene.m in Sources */,
+				DB6930AD178081F800F7DE07 /* SKCNodeIsComponent.m in Sources */,
 				D92421791779E23900CF03C8 /* SKComponentNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

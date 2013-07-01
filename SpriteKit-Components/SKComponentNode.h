@@ -14,11 +14,29 @@
 void skc_applyOnEnter(SKNode* node);
 void skc_applyOnExit(SKNode* node);
 
+
+SK_EXPORT @interface SKCTouchState : NSObject
+
+@property (nonatomic, weak) UITouch *touch;
+@property (nonatomic) CGPoint absoluteTouchStart;
+@property (nonatomic) CGPoint touchStart;
+@property (nonatomic) CGPoint touchLocation;
+@property (nonatomic) BOOL isDragging;
+@property (nonatomic) CFTimeInterval touchTime;
+@property (nonatomic) BOOL isLongPress;
+
+@end
+
+
+
 SK_EXPORT @interface SKComponentNode : SKNode {
 }
 
 @property (nonatomic) BOOL hasEnteredScene;
 @property (nonatomic) NSMutableOrderedSet* components;
+@property (nonatomic) float dragThreshold;
+@property (nonatomic) float longPressTime;
+@property (nonatomic) SKCTouchState *touchState;
 
 
 - (BOOL)addComponent:(id<SKComponent>)component withName:(NSString*)name;
@@ -33,5 +51,7 @@ SK_EXPORT @interface SKComponentNode : SKNode {
 
 - (void)onEnter;
 - (void)onExit;
+
+- (void)update:(CFTimeInterval)dt;
 
 @end

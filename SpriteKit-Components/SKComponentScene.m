@@ -7,6 +7,7 @@
 //
 
 #import "SKComponentScene.h"
+#import "SKCNodeIsComponent.h"
 
 @interface SKComponentScene() {
     NSHashTable* componentNodes;
@@ -42,7 +43,14 @@ static Class skComponentNodeClass;
 
 - (void)registerComponentNode:(SKComponentNode *)node {
     if (![componentNodes containsObject:node]) {
+        
         [componentNodesToAdd addObject:node];
+        
+        // auto configure nodes that implement the SKComponent protocol
+        if ([node conformsToProtocol:@protocol(SKComponent)]) {
+            [node addComponent:[SKCNodeIsComponent new]];
+        }
+        
     } else {
         [componentNodesToRemove removeObject:node];
     }
@@ -59,9 +67,9 @@ static Class skComponentNodeClass;
 - (void)update:(NSTimeInterval)currentTime {
     // calculate delta time
     if (lastFrameTime == 0) {
-        _deltaTime = 0;
+        _dt = 0;
     } else {
-        _deltaTime = currentTime - lastFrameTime;
+        _dt = currentTime - lastFrameTime;
     }
     lastFrameTime = currentTime;
 
@@ -71,20 +79,21 @@ static Class skComponentNodeClass;
     [componentNodesToRemove removeAllObjects];
 
     
-    // look for new SKComponent nodes and make them enter the scene
+    // look for new SKComponentNodes and make them enter the scene
     recursiveFindNewNodes(self);
     
     
-    // add new componenets
+    // add new nodes
     [componentNodes unionHashTable:componentNodesToAdd];
     [componentNodesToAdd removeAllObjects];
     
     
-    // perform update on all regiseterd components
+    // perform update on all registerd nodes
     for (SKComponentNode* node in componentNodes) {
+        [node update:_dt];
         for (id<SKComponent> component in node.components) {
             if (component.enabled && [component respondsToSelector:@selector(update:)])
-                [component update:_deltaTime];
+                [component update:_dt];
         }
     }
     
@@ -153,18 +162,38 @@ void recursiveFindNewNodes(SKNode* node) {
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
-    for (SKComponentNode* node in componentNodes) {
-        for (id<SKComponent> component in node.components) {
+    if ([contact.bodyA isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyA).components) {
+            SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
+        }
+    }
+    if ([contact.bodyB isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyB).components) {
             SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
         }
     }
 }
 
 - (void)didEndContact:(SKPhysicsContact *)contact {
-    for (SKComponentNode* node in componentNodes) {
-        for (id<SKComponent> component in node.components) {
-            SKComponentPerformSelectorWithObject(component, didEndContact, contact);
+    if ([contact.bodyA isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyA).components) {
+            SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
         }
     }
+    if ([contact.bodyB isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyB).components) {
+            SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
+        }
+    }
+}
+- (void)didChangeSize:(CGSize)oldSize {
+    [super didChangeSize:oldSize];
+    
+    for (SKComponentNode* node in componentNodes) {
+        for (id<SKComponent> component in node.components) {
+            SKComponentPerformSelectorWithObject(component, onSceneSizeChanged, oldSize);
+        }
+    }
+    
 }
 @end

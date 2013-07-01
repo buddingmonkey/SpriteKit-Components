@@ -16,7 +16,7 @@
 SK_EXPORT @interface SKComponentScene : SKScene <SKPhysicsContactDelegate> {
 }
 
-@property (nonatomic) CFTimeInterval deltaTime;
+@property (nonatomic) CFTimeInterval dt;
 
 -(void) registerComponentNode:(SKComponentNode*)node;
 -(void) unregisterComponentNode:(SKComponentNode*)node;
