@@ -121,8 +121,22 @@ OMG that was too easy. Let's make a component that will let you drag a node arou
     }
     @end
 
+Naming and Accessing Components
+--------------------
+Let's say you added a few components to your node, and now you need to change the properties of one of those components. You could keep a reference to every component, but that would be annoying. Instead, just ask the component node for it:
+
+    // Disable the component of type MyComponent (callbacks will immediately stop)
+    [node getComponent:[MyComponent class]].enabled = NO;
+    
+    // or better yet, get the component casted to the proper type
+    SKGetComponent(node, MyComponent).customProperty = 42;
+    
+Most of the time each component on a node will be of a different type, but if you wanted to add two components of the same type, you will need to name them instead of relying on the class name.
+
+    [node addComponent:[SpeedDoubler new] withName:@"2xSpeed"];
+    [node addComponent:[SpeedDoubler new] withName:@"4xSpeed"];
+    [node getComponentWithName:@"4xSpeed"].enabled = NO;
+
 SKComponentNodes can be a component too
 ----------------------------
-If you sublcass an SKComponentNode and you want to make use of the component callbacks without creating an extra component, just implement the `SKComponent` protocol. 
-Now your node gets all the component callbacks too.
-Just make sure you call `[super onEnter/onExit/update:]` so the component node can do it's behind the scenes magic.
+If you sublcass an SKComponentNode and you want to make use of the component callbacks without creating an extra component, just implement the `SKComponent` protocol.  Now your node gets all the component callbacks too. Just make sure you call `[super onEnter/onExit/update:]` so the component node can do it's behind the scenes magic.
