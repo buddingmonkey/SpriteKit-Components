@@ -9,6 +9,7 @@
 #ifndef SpriteKit_Components_SKComponents_h
 #define SpriteKit_Components_SKComponents_h
 
+#import "SKHelper.h"
 #import "SKComponentScene.h"
 #import "SKCNodeIsComponent.h"
 

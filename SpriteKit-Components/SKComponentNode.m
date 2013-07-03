@@ -242,7 +242,7 @@ void skc_applyOnExit(SKNode* node) {
             _touchState.touchLocation = location;
 
             if (!_touchState.isDragging) {
-                CGPoint d = CGPointMake(location.x-_touchState.touchStart.x, location.y-_touchState.touchStart.y);
+                CGPoint d = skpSubtract(location, _touchState.touchStart);
                 float m = d.x*d.x + d.y*d.y;
                 if (m > _dragThreshold*_dragThreshold) {
                     _touchState.isDragging = YES;
