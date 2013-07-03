@@ -29,19 +29,19 @@ Example Component - ApplyAlpha to all children
 
 SKComponentNodes automatically apply their alpha value to their direct children, but lets say you want to apply that alpha to your node's children's children's children, and so on.
 
-DeepAlpha.h
+SKCDeepAlpha.h
 
-    @interface DeepAlpha : NSObject<SKComponent> {
+    @interface SKCDeepAlpha : NSObject<SKComponent> {
         float previousAlpha;
     }
     @end
 
 
-DeepAlpha.m
+SKCDeepAlpha.m
 
-    #import "DeepAlpha.h"
+    #import "SKCDeepAlpha.h"
     
-    @implementation DeepAlpha
+    @implementation SKCDeepAlpha
     @synthesize node,enabled;
 
     - (void)onEnter {
@@ -69,7 +69,7 @@ onEnter and didEvaluateActions will automatically be called when you add this co
 To use this component, just add it to any SKComponentNode like this:
 
     SKNode* node = [SKComponentNode node];
-    [node addComponent:[DeepAlpha new]];
+    [node addComponent:[SKCDeepAlpha new]];
     // add sprites or shapes as children of your node, then add it to the scene
     [scene addChild:node];
 
