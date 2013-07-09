@@ -57,7 +57,7 @@
     if ([component respondsToSelector:@selector(node)])
         component.node = self;
     component.enabled = YES;
-    SKComponentPerformSelector(component, start);
+    SKComponentPerformSelector(component, awake);
 
     return YES;
 }

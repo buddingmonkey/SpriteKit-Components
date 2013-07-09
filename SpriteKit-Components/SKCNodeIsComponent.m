@@ -11,9 +11,9 @@
 @implementation SKCNodeIsComponent
 @synthesize node, enabled;
 
-- (void)start {
+- (void)awake {
     if (((id<SKComponent>)node).enabled && [node respondsToSelector:@selector(start)])
-        [(id<SKComponent>)node start];
+        [(id<SKComponent>)node awake];
 }
 
 - (void)didEvaluateActions {

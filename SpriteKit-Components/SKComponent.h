@@ -20,32 +20,66 @@
 
 @class SKCTouchState;
 
-SK_EXPORT @protocol SKComponent <NSObject>
+    SK_EXPORT @protocol SKComponent <NSObject>
 
-@property (nonatomic, readwrite) BOOL enabled;
+    @property (nonatomic, readwrite) BOOL enabled;
 
-@optional
-@property (nonatomic, weak) SKNode *node;
+    @optional
+    @property (nonatomic, weak) SKNode *node;
 
-@optional
-- (void)start;
-- (void)onEnter;
-- (void)onExit;
+    @optional
+    // triggered when the component is added to a component node
+    - (void)awake;
 
-- (void)didEvaluateActions;
+    // when the node is added to the scene
+    - (void)onEnter;
 
-- (void)didSimulatePhysics;
-- (void)didBeginContact:(SKPhysicsContact *)contact;
-- (void)didEndContact:(SKPhysicsContact *)contact;
+    // when the node is removed from the scene
+    - (void)onExit;
 
-- (void)update:(CFTimeInterval)dt;
-- (void)onSceneSizeChanged:(CGSize)oldSize;
+    // called every frame. dt = time since last frame
+    - (void)update:(CFTimeInterval)dt;
 
-- (void)dragStart:(SKCTouchState*)touchState;
-- (void)dragMoved:(SKCTouchState*)touchState;
-- (void)dragDropped:(SKCTouchState*)touchState;
-- (void)dragCancelled:(SKCTouchState*)touchState;
-- (void)onTap:(SKCTouchState*)touchState;
-- (void)onLongPress:(SKCTouchState*)touchState;
-- (void)onSelect:(SKCTouchState*)touchState;
-@end
+    // SpriteKit - forwarded from SKScene
+    - (void)onSceneSizeChanged:(CGSize)oldSize;
+
+    // SpriteKit - forwarded from SKScene
+    - (void)didEvaluateActions;
+
+    #pragma mark -- Physics Handlers --
+
+    // SpriteKit - forwarded from SKScene
+    - (void)didSimulatePhysics;
+
+    // SpriteKit - forwarded from SKScene when this node is one of the nodes in contact
+    - (void)didBeginContact:(SKPhysicsContact *)contact;
+    - (void)didEndContact:(SKPhysicsContact *)contact;
+
+
+    #pragma mark -- Touch Handlers --
+    // all touch handlers are only triggered if the tough down is inside the node content area
+
+    // called once a touch moves beyond the SKComponentNode dragThreshold (defaults to 4 units)
+    - (void)dragStart:(SKCTouchState*)touchState;
+
+    // called every time a touch moves after dragging has started
+    - (void)dragMoved:(SKCTouchState*)touchState;
+
+    // called on touch up after dragging has started
+    - (void)dragDropped:(SKCTouchState*)touchState;
+
+    // called if the touch is canceled after dragging has started
+    - (void)dragCancelled:(SKCTouchState*)touchState;
+
+
+    // called on Touch Up if UITouch tap count >= 1 and touch is not classified as dragging or a long touch
+    - (void)onTap:(SKCTouchState*)touchState;
+
+    // called if touch is held for SKComponentNode longPressTime (defaults to 1 second)
+    // AND touch has not moved beyond dragThreshold
+    - (void)onLongPress:(SKCTouchState*)touchState;
+
+    // equivalent to iOS Touch Up Inside. Typically used for menu items rather than tap
+    - (void)onSelect:(SKCTouchState*)touchState;
+
+    @end
