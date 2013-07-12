@@ -36,7 +36,7 @@
         [(id<SKComponent>)node didEndContact:contact];
 }
 
-// Nodes get update, onEnter, and onExit automatically
+// SKComponentNodes get update, onEnter, and onExit automatically
 
 - (void)onSceneSizeChanged:(CGSize)oldSize {
     if (((id<SKComponent>)node).enabled && [node respondsToSelector:@selector(onSceneSizeChanged:)])
@@ -78,5 +78,6 @@
         [(id<SKComponent>)node onSelect:touchState];
 }
 
+// SKComponentNodes can already override touchBegan/Moved/Ended/Cancelled, so no need to forward
 
 @end

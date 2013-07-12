@@ -83,4 +83,16 @@ SK_EXPORT @protocol SKComponent <NSObject>
 // equivalent to iOS Touch Up Inside. Typically used for menu items rather than tap
 - (void)onSelect:(SKCTouchState*)touchState;
 
+// standard touchesBegan event, called prior to touchState based events
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+
+// standard touchesMoved event, called prior to touchState based events
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+
+// standard touchesEnded event, called prior to touchState based events
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+
+// standard touchesCancelled event, called prior to touchState based events
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
+
 @end

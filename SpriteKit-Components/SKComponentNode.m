@@ -221,6 +221,12 @@ void skc_applyOnExit(SKNode* node) {
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (id<SKComponent> component in components) {
+        if(component.enabled && [component respondsToSelector:@selector(touchesBegan:withEvent:)]) {
+            [component touchesBegan:touches withEvent:event];
+        }
+    }
+
     for (UITouch *touch in touches) {
         if (!isFingerDown) {
             isFingerDown = YES;
@@ -236,6 +242,12 @@ void skc_applyOnExit(SKNode* node) {
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (id<SKComponent> component in components) {
+        if(component.enabled && [component respondsToSelector:@selector(touchesMoved:withEvent:)]) {
+            [component touchesMoved:touches withEvent:event];
+        }
+    }
+
     for (UITouch *touch in touches) {
         if (isFingerDown && touch == _touchState.touch) {
             CGPoint location = [touch locationInNode:self];
@@ -261,6 +273,12 @@ void skc_applyOnExit(SKNode* node) {
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (id<SKComponent> component in components) {
+        if(component.enabled && [component respondsToSelector:@selector(touchesEnded:withEvent:)]) {
+            [component touchesEnded:touches withEvent:event];
+        }
+    }
+
     for (UITouch *touch in touches) {
         if (isFingerDown && touch == _touchState.touch) {
             isFingerDown = NO;
@@ -300,6 +318,12 @@ void skc_applyOnExit(SKNode* node) {
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (id<SKComponent> component in components) {
+        if(component.enabled && [component respondsToSelector:@selector(touchesCancelled:withEvent:)]) {
+            [component touchesCancelled:touches withEvent:event];
+        }
+    }
+
     for (UITouch *touch in touches) {
         if (isFingerDown && touch == _touchState.touch) {
             isFingerDown = NO;
