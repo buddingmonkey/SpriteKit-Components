@@ -78,7 +78,7 @@ Your components must implement the following protocol. All methods are optional,
 
 // called if the touch is canceled after dragging has started
 - (void)dragCancelled:(SKCTouchState*)touchState;
-
+- 
 
 // called on Touch Up if UITouch tap count >= 1 and touch is not classified as dragging or a long touch
 - (void)onTap:(SKCTouchState*)touchState;
@@ -89,6 +89,20 @@ Your components must implement the following protocol. All methods are optional,
 
 // equivalent to iOS Touch Up Inside. Typically used for menu items rather than tap
 - (void)onSelect:(SKCTouchState*)touchState;
+
+
+// standard touchesBegan event, called prior to touchState based events
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+
+// standard touchesMoved event, called prior to touchState based events
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+
+// standard touchesEnded event, called prior to touchState based events
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+
+// standard touchesCancelled event, called prior to touchState based events
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
+
 
 @end
 ```
