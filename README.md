@@ -132,11 +132,11 @@ SKCDeepAlpha.m
 @synthesize node,enabled;
 
 - (void)onEnter {
-    recursivelyApplyAlpha(node, node.alpha);
+	recursivelyApplyAlpha(node, node.alpha);
 }
     
 - (void)didEvaluateActions {
- if (previousAlpha != node.alpha) {
+	if (previousAlpha != node.alpha) {
 		recursivelyApplyAlpha(node, node.alpha);
 		previousAlpha = node.alpha;
 	}
@@ -166,7 +166,7 @@ SKNode* node = [SKComponentNode node];
 Example Component - Adding Touch Interaction
 ---------------------------------------
 
-First off, don't forget to turn on user interaction on your SKComponentNode with `node.userInteractionEnabled = YES;`. A good place to do it would be in the component's start method.
+First off, don't forget to turn on user interaction on your SKComponentNode with `node.userInteractionEnabled = YES;`. A good place to do it would be in the component's awake method.
 
 Every app has buttons. Let's make a component that responds to a touch-up-inside type gesture.
 
@@ -174,8 +174,8 @@ Every app has buttons. Let's make a component that responds to a touch-up-inside
 @implementation SKCSelectTest
 @synthesize node, enabled;
 
-- (void)start {
- node.userInteractionEnabled = YES;
+- (void)awake {
+	node.userInteractionEnabled = YES;
 }
 
 - (void)onSelect:(SKCTouchState*)touchState {
@@ -191,8 +191,8 @@ OMG that was too easy. Let's make a component that will let you drag a node arou
 @synthesize node, enabled;
 @synthesize startPosition;
 
-- (void)start {
- node.userInteractionEnabled = YES;
+- (void)awake {
+	node.userInteractionEnabled = YES;
 }
 
 - (void)dragStart:(SKCTouchState*)touchState {
