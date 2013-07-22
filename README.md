@@ -238,3 +238,7 @@ Most of the time each component on a node will be of a different type, but if yo
 SKComponentNodes can be a component too
 ----------------------------
 If you sublcass an SKComponentNode and you want to make use of the component callbacks without creating an extra component, just implement the `SKComponent` protocol.  Now your node gets all the component callbacks too. Just make sure you call `[super onEnter/onExit/update:]` so the component node can do it's behind the scenes magic.
+
+License
+-------
+This software is licensed under the MIT License (MIT). See LICENSE file for details.
