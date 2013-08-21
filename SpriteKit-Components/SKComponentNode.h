@@ -42,6 +42,8 @@ SK_EXPORT @interface SKCTouchState : NSObject
 @property (nonatomic) CGPoint absoluteTouchStart;
 @property (nonatomic) CGPoint touchStart;
 @property (nonatomic) CGPoint touchLocation;
+@property (nonatomic) CGPoint absoluteLocation;
+@property (nonatomic) CGPoint touchDelta;
 @property (nonatomic) BOOL isDragging;
 @property (nonatomic) CFTimeInterval touchTime;
 @property (nonatomic) BOOL isLongPress;

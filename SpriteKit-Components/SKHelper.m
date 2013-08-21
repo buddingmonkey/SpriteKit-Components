@@ -87,3 +87,9 @@ CGPoint skpSubtract(CGPoint pt1, CGPoint pt2) {
 CGPoint skpMultiply(CGPoint pt, float scalar) {
     return CGPointMake(pt.x * scalar, pt.y * scalar);
 }
+
+float skpDistance(CGPoint pt1, CGPoint pt2) {
+    float dx = pt1.x-pt2.x;
+    float dy = pt1.y-pt2.y;
+    return sqrt(dx*dx + dy*dy);
+}

@@ -52,6 +52,7 @@ static Class skComponentNodeClass;
         componentNodesToAdd = [NSHashTable weakObjectsHashTable];
         componentNodesToRemove = [NSHashTable weakObjectsHashTable];
         lastFrameTime = 0;
+        _dtLimit = .1;
         
         self.physicsWorld.contactDelegate = self;
     }
@@ -90,7 +91,7 @@ static Class skComponentNodeClass;
     if (lastFrameTime == 0) {
         _dt = 0;
     } else {
-        _dt = currentTime - lastFrameTime;
+        _dt = MIN(currentTime - lastFrameTime, _dtLimit);
     }
     lastFrameTime = currentTime;
 
@@ -183,26 +184,26 @@ void recursiveFindNewNodes(SKNode* node) {
 }
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
-    if ([contact.bodyA isKindOfClass:[SKComponentNode class]]) {
-        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyA).components) {
+    if ([contact.bodyA.node isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyA.node).components) {
             SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
         }
     }
-    if ([contact.bodyB isKindOfClass:[SKComponentNode class]]) {
-        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyB).components) {
+    if ([contact.bodyB.node isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyB.node).components) {
             SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
         }
     }
 }
 
 - (void)didEndContact:(SKPhysicsContact *)contact {
-    if ([contact.bodyA isKindOfClass:[SKComponentNode class]]) {
-        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyA).components) {
+    if ([contact.bodyA.node isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyA.node).components) {
             SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
         }
     }
-    if ([contact.bodyB isKindOfClass:[SKComponentNode class]]) {
-        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyB).components) {
+    if ([contact.bodyB.node isKindOfClass:[SKComponentNode class]]) {
+        for (id<SKComponent> component in ((SKComponentNode*)contact.bodyB.node).components) {
             SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
         }
     }

@@ -34,7 +34,9 @@
 @synthesize node, enabled;
 
 - (void)awake {
-    if (((id<SKComponent>)node).enabled && [node respondsToSelector:@selector(start)])
+    ((id<SKComponent>)node).node = node;
+    ((id<SKComponent>)node).enabled = YES;
+    if ([node respondsToSelector:@selector(awake)])
         [(id<SKComponent>)node awake];
 }
 

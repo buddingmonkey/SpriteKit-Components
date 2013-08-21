@@ -43,7 +43,7 @@
 + (instancetype)runBlock:(dispatch_block_t)block afterDelay:(CFTimeInterval)delay;
 @end
 
-#define skp CGPointMake
+#define skp(x,y) CGPointMake(x,y)
 #define skpEquals CGPointEqualToPoint
 
 CGPoint skpNormalize(CGPoint pt);
@@ -51,3 +51,4 @@ float skpMagnitude(CGPoint pt);
 CGPoint skpAdd(CGPoint pt1, CGPoint pt2);
 CGPoint skpSubtract(CGPoint pt1, CGPoint pt2);
 CGPoint skpMultiply(CGPoint pt, float scalar);
+float skpDistance(CGPoint pt1, CGPoint pt2);

@@ -254,7 +254,9 @@ void skc_applyOnExit(SKNode* node) {
             _touchState.touch = touch;
             _touchState.absoluteTouchStart = [touch locationInNode:self.scene];
             _touchState.touchStart = [touch locationInNode:self];
+            _touchState.touchDelta = skp(0,0);
             _touchState.touchLocation = _touchState.touchStart;
+            _touchState.absoluteLocation= _touchState.absoluteTouchStart;
             _touchState.touchTime = 0;
             _touchState.isLongPress = NO;
             _touchState.isDragging = NO;            
@@ -272,6 +274,9 @@ void skc_applyOnExit(SKNode* node) {
     for (UITouch *touch in touches) {
         if (isFingerDown && touch == _touchState.touch) {
             CGPoint location = [touch locationInNode:self];
+            CGPoint absoluteLocation = [touch locationInNode:self.scene];
+            _touchState.touchDelta = skpSubtract(absoluteLocation, _touchState.absoluteLocation);
+            _touchState.absoluteLocation = absoluteLocation;
             _touchState.touchLocation = location;
 
             if (!_touchState.isDragging) {
@@ -304,6 +309,9 @@ void skc_applyOnExit(SKNode* node) {
         if (isFingerDown && touch == _touchState.touch) {
             isFingerDown = NO;
             CGPoint location = [touch locationInNode:self];
+            CGPoint absoluteLocation = [touch locationInNode:self.scene];
+            _touchState.touchDelta = skpSubtract(absoluteLocation, _touchState.absoluteLocation);
+            _touchState.absoluteLocation = absoluteLocation;
             _touchState.touchLocation = location;
 
             if (_touchState.isDragging) {
@@ -350,7 +358,11 @@ void skc_applyOnExit(SKNode* node) {
             isFingerDown = NO;
             
             if (_touchState.isDragging) {
-                _touchState.touchLocation = [touch locationInNode:self];
+                CGPoint location = [touch locationInNode:self];
+                CGPoint absoluteLocation = [touch locationInNode:self.scene];
+                _touchState.touchDelta = skpSubtract(absoluteLocation, _touchState.absoluteLocation);
+                _touchState.absoluteLocation = absoluteLocation;
+                _touchState.touchLocation = location;
                 for (id<SKComponent> component in components) {
                     SKComponentPerformSelectorWithObject(component, dragCancelled, _touchState);
                 }
