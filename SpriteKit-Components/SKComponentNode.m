@@ -109,11 +109,17 @@
 
 - (id<SKComponent>)getComponentWithName:(NSString*)name {
     int index = [componentKeys indexOfObject:name];
+    if (index == NSNotFound) {
+        return nil;
+    }
     return [components objectAtIndex:index];
 }
 
 - (id<SKComponent>)getComponent:(Class)componentClass {
     int index = [componentKeys indexOfObject:componentClass];
+    if (index == NSNotFound) {
+        return nil;
+    }
     return [components objectAtIndex:index];
 }
 
