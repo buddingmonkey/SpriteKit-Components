@@ -7,6 +7,16 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "SKComponentNode.h"
+
+@interface MockComponent : NSObject <SKComponent>
+
+@end
+
+@implementation MockComponent
+@synthesize node,enabled;
+@end
+
 
 @interface SpriteKit_ComponentsTests : XCTestCase
 
@@ -55,4 +65,30 @@
         XCTFail(@"Set is the wrong size");
 }
 
+- (void) testGetNodeWithUnregisteredClass {
+    SKComponentNode *node = [SKComponentNode node];
+    NSObject *obj = [node getComponent:[NSObject class]];
+    XCTAssertNil(obj, @"Object must be nil");
+}
+
+- (void) testGetNodeWithRegisteredClass {
+    SKComponentNode *node = [SKComponentNode node];
+    [node addComponent:[[MockComponent alloc] init]];
+    MockComponent *obj = [node getComponent:[MockComponent class]];
+    XCTAssertNotNil(obj, @"Object must not be nil");
+}
+
+
+- (void) testGetNodeWithUnregisteredName {
+    SKComponentNode *node = [SKComponentNode node];
+    NSObject *obj = [node getComponentWithName:@"test"];
+    XCTAssertNil(obj, @"Object must be nil");
+}
+
+- (void) testGetNodeWithRegisteredName {
+    SKComponentNode *node = [SKComponentNode node];
+    [node addComponent:[[MockComponent alloc] init] withName:@"test"];
+    MockComponent *obj = [node getComponentWithName:@"test"];
+    XCTAssertNotNil(obj, @"Object must not be nil");
+}
 @end

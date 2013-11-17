@@ -40,13 +40,14 @@
     }
 
 @class SKCTouchState;
+@class SKComponentNode;
 
 SK_EXPORT @protocol SKComponent <NSObject>
 
 @property (nonatomic, readwrite) BOOL enabled;
 
 @optional
-@property (nonatomic, weak) SKNode *node;
+@property (nonatomic, weak) SKComponentNode *node;
 
 @optional
 // triggered when the component is added to a component node
