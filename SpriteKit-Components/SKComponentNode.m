@@ -255,6 +255,10 @@ void skc_applyOnExit(SKNode* node) {
         }
     }
 
+    if (!_touchState.touch) {
+        isFingerDown = NO;
+    }
+
     for (UITouch *touch in touches) {
         if (!isFingerDown) {
             isFingerDown = YES;
