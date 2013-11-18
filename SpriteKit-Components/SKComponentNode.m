@@ -60,6 +60,7 @@
 
 - (void)dealloc {
     components = Nil;
+    _touchSet = Nil;
 }
 
 - (BOOL)addComponent:(id<SKComponent>)component withName:(NSString*)name {
@@ -265,7 +266,14 @@ void skc_applyOnExit(SKNode* node) {
             _touchState.absoluteLocation= _touchState.absoluteTouchStart;
             _touchState.touchTime = 0;
             _touchState.isLongPress = NO;
-            _touchState.isDragging = NO;            
+            _touchState.isDragging = NO;
+            
+            // workaround for SpriteKit bug #15490329
+            _touchSet = [NSHashTable weakObjectsHashTable];
+            for (UITouch *touch in touches) {
+                [_touchSet addObject:touch];
+            }
+            
         }
     }
 }
@@ -312,8 +320,11 @@ void skc_applyOnExit(SKNode* node) {
     }
 
     for (UITouch *touch in touches) {
-        if (isFingerDown && touch == _touchState.touch) {
+        // touchSet workaround for SpriteKit bug #15490329
+        if (isFingerDown && (touch == _touchState.touch || [_touchSet containsObject:touch])) {
+            _touchSet = Nil;
             isFingerDown = NO;
+            
             CGPoint location = [touch locationInNode:self];
             CGPoint absoluteLocation = [touch locationInNode:self.scene];
             _touchState.touchDelta = skpSubtract(absoluteLocation, _touchState.absoluteLocation);
@@ -360,7 +371,9 @@ void skc_applyOnExit(SKNode* node) {
     }
 
     for (UITouch *touch in touches) {
-        if (isFingerDown && touch == _touchState.touch) {
+        // touchSet workaround for SpriteKit bug #15490329
+        if (isFingerDown && (touch == _touchState.touch || [_touchSet containsObject:touch])) {
+            _touchSet = Nil;
             isFingerDown = NO;
             
             if (_touchState.isDragging) {

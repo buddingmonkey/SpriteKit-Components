@@ -53,6 +53,8 @@ SK_EXPORT @interface SKCTouchState : NSObject
 
 
 SK_EXPORT @interface SKComponentNode : SKNode {
+    // workaround for SpriteKit bug #15490329
+    NSHashTable *_touchSet;
 }
 
 @property (nonatomic) BOOL hasEnteredScene;
