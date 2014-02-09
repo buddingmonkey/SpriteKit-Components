@@ -199,12 +199,12 @@ void recursiveFindNewNodes(SKNode* node) {
 - (void)didEndContact:(SKPhysicsContact *)contact {
     if ([contact.bodyA.node isKindOfClass:[SKComponentNode class]]) {
         for (id<SKComponent> component in ((SKComponentNode*)contact.bodyA.node).components) {
-            SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
+            SKComponentPerformSelectorWithObject(component, didEndContact, contact);
         }
     }
     if ([contact.bodyB.node isKindOfClass:[SKComponentNode class]]) {
         for (id<SKComponent> component in ((SKComponentNode*)contact.bodyB.node).components) {
-            SKComponentPerformSelectorWithObject(component, didBeginContact, contact);
+            SKComponentPerformSelectorWithObject(component, didEndContact, contact);
         }
     }
 }
