@@ -153,7 +153,7 @@
 
     // unregister self with scene
     SKComponentScene* scene = SKComponentSceneForNode(self);
-    [scene registerComponentNode:self];
+    [scene unregisterComponentNode:self];
 
     // perform onExit for all components
     for (id<SKComponent> component in components) {
