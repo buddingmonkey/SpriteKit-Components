@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name              = 'SpriteKit-Components'
-    s.version           = '1.0.0'
+    s.version           = '1.0.1'
     s.summary           = 'Component model and helper classess for iOS 7+ SpriteKit Framework'
     s.homepage          = 'https://github.com/buddingmonkey/SpriteKit-Components'
     s.license           = {
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
         'buddingmonkey' => 'buddingmonkey'
     }
     s.source            = {
-        :git => 'https://github.com/xr1337/SpriteKit-Components.git',
+        :git => 'https://github.com/buddingmonkey/SpriteKit-Components.git',
         :tag => s.version.to_s
     }
     s.frameworks = 'SpriteKit'
