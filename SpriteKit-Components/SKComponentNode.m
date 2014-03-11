@@ -85,7 +85,7 @@
 }
 
 - (void)removeComponent:(id<SKComponent>)component{
-    int index = [components indexOfObject:component];
+    NSInteger index = [components indexOfObject:component];
     [self _removeComponentWithKey:[componentKeys objectAtIndex:index]];
 }
 
@@ -98,7 +98,7 @@
 }
 
 - (void)_removeComponentWithKey:(id)key {
-    int index = [componentKeys indexOfObject:key];
+    NSInteger index = [componentKeys indexOfObject:key];
     if (index == NSNotFound) {
         return;
     }
@@ -109,7 +109,7 @@
 
 
 - (id<SKComponent>)getComponentWithName:(NSString*)name {
-    int index = [componentKeys indexOfObject:name];
+    NSInteger index = [componentKeys indexOfObject:name];
     if (index == NSNotFound) {
         return nil;
     }
@@ -117,7 +117,7 @@
 }
 
 - (id<SKComponent>)getComponent:(Class)componentClass {
-    int index = [componentKeys indexOfObject:componentClass];
+    NSInteger index = [componentKeys indexOfObject:componentClass];
     if (index == NSNotFound) {
         return nil;
     }
