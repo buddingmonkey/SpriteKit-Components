@@ -50,7 +50,7 @@
     [set addObject:@"test2"];
     
     
-    int index = [set indexOfObject:@"test2"];
+    NSInteger index = [set indexOfObject:@"test2"];
     if (index == NSNotFound)
         XCTFail(@"can't find test2 in set");
     if (index != 1)
