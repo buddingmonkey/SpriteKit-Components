@@ -29,6 +29,8 @@
 
 #import <Foundation/Foundation.h>
 
+#undef onExit // Fix to work with jspahrsummers/libextobjc by alexruperez
+
 #define SKComponentPerformSelector(component, selectorName)  \
     if((component).enabled && [(component) respondsToSelector:@selector(selectorName)]) { \
         [(component) selectorName]; \
