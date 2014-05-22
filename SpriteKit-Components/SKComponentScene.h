@@ -40,7 +40,7 @@ SK_EXPORT @interface SKComponentScene : SKScene <SKPhysicsContactDelegate> {
 @property (nonatomic) CFTimeInterval dt;
 @property (nonatomic) CFTimeInterval dtLimit;
 
--(void) registerComponentNode:(SKComponentNode*)node;
--(void) unregisterComponentNode:(SKComponentNode*)node;
-
+- (void) registerComponentNode:(SKComponentNode*)node;
+- (void) unregisterComponentNode:(SKComponentNode*)node;
+- (void)update:(NSTimeInterval)currentTime __attribute__((objc_requires_super));
 @end

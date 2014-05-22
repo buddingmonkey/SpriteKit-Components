@@ -86,7 +86,7 @@ static Class skComponentNodeClass;
     }
 }
 
-- (void)update:(NSTimeInterval)currentTime {
+- (void)update:(NSTimeInterval)currentTime __attribute__((objc_requires_super)) {
     // calculate delta time
     if (lastFrameTime == 0) {
         _dt = 0;
