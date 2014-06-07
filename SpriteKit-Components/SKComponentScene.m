@@ -46,17 +46,35 @@ static Class skComponentNodeClass;
 
 -(id)initWithSize:(CGSize)size {
     if ((self = [super initWithSize:size])) {
-        if (!skComponentNodeClass)
-            skComponentNodeClass = [SKComponentNode class];
-        componentNodes = [NSHashTable weakObjectsHashTable];
-        componentNodesToAdd = [NSHashTable weakObjectsHashTable];
-        componentNodesToRemove = [NSHashTable weakObjectsHashTable];
-        lastFrameTime = 0;
-        _dtLimit = .1;
-        
-        self.physicsWorld.contactDelegate = self;
+        [self initialize];
     }
     return self;
+}
+
+-(id) init {
+    if ((self = [super init])) {
+        [self initialize];
+    }
+    return self;
+}
+
+-(id) initWithCoder:(NSCoder *)aDecoder{
+    if ((self = [super initWithCoder:aDecoder])) {
+        [self initialize];
+    }
+    return self;
+}
+
+-(void) initialize {
+    if (!skComponentNodeClass)
+        skComponentNodeClass = [SKComponentNode class];
+    componentNodes = [NSHashTable weakObjectsHashTable];
+    componentNodesToAdd = [NSHashTable weakObjectsHashTable];
+    componentNodesToRemove = [NSHashTable weakObjectsHashTable];
+    lastFrameTime = 0;
+    _dtLimit = .1;
+    
+    self.physicsWorld.contactDelegate = self;
 }
 
 - (void)dealloc {
@@ -175,7 +193,6 @@ void recursiveFindNewNodes(SKNode* node) {
 
 - (void)didSimulatePhysics{
     [super didSimulatePhysics];
-    
     for (SKComponentNode* node in componentNodes) {
         for (id<SKComponent> component in node.components) {
             SKComponentPerformSelector(component, didSimulatePhysics);

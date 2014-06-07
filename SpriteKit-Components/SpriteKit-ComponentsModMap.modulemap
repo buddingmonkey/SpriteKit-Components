@@ -1,0 +1,6 @@
+framework module SKComponents {
+    umbrella header "SKComponents.h"
+    
+    export *
+    module * { export * }
+}
