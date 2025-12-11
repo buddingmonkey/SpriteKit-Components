@@ -1,3 +1,5 @@
+# This repo is now archived. Apple has built similar functionality into [GamePlayKit](https://developer.apple.com/documentation/gameplaykit)
+====================
 SpriteKit-Components
 ====================
 
